@@ -4,7 +4,8 @@
  *
  ****************************************************/
 
-const tooltip = document.createElement("div");
+function initToolsTipes() {
+  const tooltip = document.createElement("div");
 tooltip.className = "custom-tooltip";
 document.body.appendChild(tooltip);
 
@@ -39,51 +40,21 @@ function animateTooltip() {
 }
 
 animateTooltip();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
 
 ///////////////////////////////////////
 
+
+function initHeader() {
+  
 const toggleBtn = document.querySelector(".header__menu-btn");
 const links = document.querySelector(".header__links");
 const linkItems = document.querySelectorAll(".header__links a");
 const overlay = document.querySelector(".overlay");
-const  html = document.querySelector("html")
+const html = document.querySelector("html");
 
 const isMobile = () => window.innerWidth < 992;
 
@@ -96,7 +67,7 @@ function collapseMenu() {
 }
 
 function expandMenu() {
-  html.classList.toggle("overflow-hidden")
+  html.classList.toggle("overflow-hidden");
   links.style.height = `${links.scrollHeight}px`;
   links.classList.add("active");
 
@@ -132,6 +103,7 @@ linkItems.forEach((item) =>
   })
 );
 
+}
 ///////////////////////////////////////////
 
 function initAccordion(scope) {
@@ -176,68 +148,58 @@ function initAccordion(scope) {
 
 document.querySelectorAll(".accordion").forEach((acc) => initAccordion(acc));
 
-
 ///////////////////////
 
+function initVertial() {
+  function updateVerticalLines() {
+  const container = document.querySelector(".container");
+  const verticalLines = document.querySelector(".vertical-lines");
+  const stopper = 64; // 4rem
+
+  if (container && verticalLines) {
+    const rect = container.getBoundingClientRect();
+    const windowWidth = window.innerWidth;
+
+    const left = Math.max(rect.left, stopper);
+    const right = Math.max(windowWidth - rect.right, stopper);
+
+    verticalLines.style.setProperty("--left-line", `${left}px`);
+    verticalLines.style.setProperty("--right-line", `${right}px`);
+  }
+}
+
+window.addEventListener("load", updateVerticalLines);
+window.addEventListener("resize", updateVerticalLines);
+
+
+}
 
 
 
- function updateVerticalLines() {
-        const container = document.querySelector(".container");
-        const verticalLines = document.querySelector(".vertical-lines");
-        const stopper = 64; // 4rem
 
-        if (container && verticalLines) {
-          const rect = container.getBoundingClientRect();
-          const windowWidth = window.innerWidth;
 
-          const left = Math.max(rect.left, stopper);
-          const right = Math.max(windowWidth - rect.right, stopper);
 
-          verticalLines.style.setProperty("--left-line", `${left}px`);
-          verticalLines.style.setProperty("--right-line", `${right}px`);
-        }
+const sections = document.querySelectorAll(".data__title");
+const heading = document.getElementById("dynamic-heading");
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        heading.textContent = entry.target.getAttribute("data-title");
       }
+    });
+  },
+  {
+    root: null,
+    rootMargin: "-30% 0px -50% 0px", // this slows the switch until more visible
+    threshold: 0.5, // reduced from 0.5
+  }
+);
 
-      window.addEventListener("load", updateVerticalLines);
-      window.addEventListener("resize", updateVerticalLines);
+sections.forEach((section) => {
+  observer.observe(section);
+});
 
+///////////////////////////////////////////
 
-
-
-
-
-       const sections = document.querySelectorAll(".data__title");
-      const heading = document.getElementById("dynamic-heading");
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              heading.textContent = entry.target.getAttribute("data-title");
-            }
-          });
-        },
-        {
-          root: null,
-          rootMargin: "-30% 0px -50% 0px", // this slows the switch until more visible
-          threshold: 0.5, // reduced from 0.5
-        }
-      );
-
-      sections.forEach((section) => {
-        observer.observe(section);
-      });
-
-
-
-
-
-
-
-
-
-
-
-
-      
